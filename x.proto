@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+package x;
+
+service XService {
+    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
+    rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+    rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse);
+    rpc GetLastMessages(LastMessagesRequest) returns (LastMessagesResponse);
+    rpc LikeMessage(LikeMessageRequest) returns (LikeMessageResponse);
+    rpc CommentMessage(CommentMessageRequest) returns (CommentMessageResponse);
+    rpc FollowUser(FollowUserRequest) returns (FollowUserResponse);
+    rpc GetUserId(GetUserIdRequest) returns (GetUserIdResponse);
+    rpc EditMessage(EditMessageRequest) returns (EditMessageResponse);
+    rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse);
+    rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
+    rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
+}
+
+message RegisterUserRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message RegisterUserResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message LoginUserRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginUserResponse {
+    bool success = 1;
+    string token = 2;
+    string message = 3;
+}
+
+message SendMessageRequest {
+    string message = 1;
+    string user_token = 2;
+}
+
+message SendMessageResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message GetMessagesRequest {
+    int32 count = 1;
+}
+
+message Comment {
+    string username = 1;
+    string content = 2;
+}
+
+message Message {
+    int32 id = 1;
+    string username = 2;
+    string content = 3;
+    string timestamp = 4;
+    int32 likes = 5;
+    int32 comments_count = 6;
+    repeated Comment comments = 7;
+}
+
+message GetMessagesResponse {
+    repeated Message messages = 1;
+}
+
+message LastMessagesRequest {
+    int32 count = 1;
+}
+
+message LastMessagesResponse {
+    repeated Message messages = 1;
+}
+
+message LikeMessageRequest {
+    int32 message_id = 1;
+    string user_token = 2;
+}
+
+message LikeMessageResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message CommentMessageRequest {
+    int32 message_id = 1;
+    string comment = 2;
+    string user_token = 3;
+}
+
+message CommentMessageResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message FollowUserRequest {
+    string user_token = 1;
+    int32 followee_id = 2;
+}
+
+message FollowUserResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message GetUserIdRequest {
+    string username = 1;
+}
+
+message GetUserIdResponse {
+    int32 user_id = 1;
+    bool success = 2;
+    string message = 3;
+}
+
+message EditMessageRequest {
+    int32 message_id = 1;
+    string new_content = 2;
+    string user_token = 3;
+}
+
+message EditMessageResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message DeleteMessageRequest {
+    int32 message_id = 1;
+    string user_token = 2;
+}
+
+message DeleteMessageResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message DeleteAccountRequest {
+    string user_token = 1;
+    bool delete_messages = 2;
+}
+
+message DeleteAccountResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message ChangePasswordRequest {
+    string user_token = 1;
+    string old_password = 2;
+    string new_password = 3;
+}
+
+message ChangePasswordResponse {
+    bool success = 1;
+    string message = 2;
+}
