@@ -1,0 +1,53 @@
+-- Tworzenie bazy danych
+CREATE DATABASE x;
+
+-- Używanie nowo utworzonej bazy danych
+USE x;
+
+-- Tabela użytkowników
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    token VARCHAR(255) UNIQUE
+);
+
+-- Tabela wiadomości
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    content VARCHAR(255),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Tabela polubień
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    message_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE,
+    UNIQUE(user_id, message_id)
+);
+
+-- Tabela komentarzy
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    message_id INT,
+    content VARCHAR(255),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE
+);
+
+-- Tabela śledzenia użytkowników
+CREATE TABLE follows (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    follower_id INT,
+    followee_id INT,
+    FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (followee_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(follower_id, followee_id)
+);
